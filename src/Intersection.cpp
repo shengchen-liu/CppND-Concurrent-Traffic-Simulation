@@ -71,7 +71,6 @@ std::vector<std::shared_ptr<Street>> Intersection::queryStreets(std::shared_ptr<
 }
 
 bool Intersection::trafficLightIsGreen(){
-    std::cout <<  (_trafficLight.getCurrentPhase() == green) << std::endl;
     return _trafficLight.getCurrentPhase() == green;
 }
 
