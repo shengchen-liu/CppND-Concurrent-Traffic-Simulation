@@ -87,13 +87,12 @@ void TrafficLight::cycleThroughPhases()
         int durationSinceSwitched = tmpSeconds.count();
         
         if(durationSinceSwitched >= cycleDuration){
-            _currentPhase = _currentPhase == red ? green : red;
+            // std::cout<< durationSinceSwitched << std::endl;
 
-            auto sentFuture = std::async(std::launch::async, 
-                                    &MessageQueue<TrafficLightPhase>::send,
-                                    &_queue,
-                                    std::move(_currentPhase));
-            sentFuture.wait();
+            _currentPhase = (_currentPhase == red) ? green : red;
+            // std::cout << _currentPhase << std::endl;
+
+            _queue.send(std::move(TrafficLightPhase(_currentPhase ) ));
 
             lastSwitchedTime = std::chrono::system_clock::now();
             cycleDuration = dist(gen);
