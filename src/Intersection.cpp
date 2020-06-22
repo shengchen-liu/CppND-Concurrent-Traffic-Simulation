@@ -113,6 +113,7 @@ void Intersection::setIsBlocked(bool isBlocked)
 
 void Intersection::simulate()
 {
+    // FP.2b : Finally, the private method „cycleThroughPhases“ should be started in a thread when the public method „simulate“ is called. To do this, use the thread queue in the base class. 
     _trafficLight.simulate();
     threads.emplace_back(std::thread(&Intersection::processVehicleQueue, this));
 }
