@@ -27,4 +27,12 @@ This is a traffic simulation in which vehicles are moving along streets and are 
 3. Compile: `cmake .. && make`
 4. Run it: `./traffic_simulation`.
 
-# CppND-Concurrent-Traffic-Simulation
+# Project Tasks
+
+## Task 3
+
+![image-20200622170820472](README.assets/image-20200622170820472.png)
+
+- **Task L3.1** : In class `WaitingVehicles`, safeguard all accesses to the private members `_vehicles` and `_promises` with an appropriate locking mechanism, that will not cause a deadlock situation where access to the resources is accidentally blocked.
+- **Task L2.2** : Add a static mutex to the base class `TrafficObject` (called `_mtxCout`) and properly instantiate it in the source file. This mutex will be used in the next task to protect standard-out.
+- **Task L2.3** : In method `Intersection::addVehicleToQueue` and in `Vehicle::drive()` ensure that the text output locks the console as a shared resource. Use the mutex `_mtxCout` you have added to the base class `TrafficObject` in the previous task. Make sure that in between the two calls to `std::cout` at the beginning and at the end of `addVehicleToQueue` the lock is not held.
