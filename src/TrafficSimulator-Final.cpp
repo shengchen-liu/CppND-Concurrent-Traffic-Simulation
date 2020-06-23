@@ -12,7 +12,7 @@
 void createTrafficObjects_Paris(std::vector<std::shared_ptr<Street>> &streets, std::vector<std::shared_ptr<Intersection>> &intersections, std::vector<std::shared_ptr<Vehicle>> &vehicles, std::string &filename, int nVehicles)
 {
     // assign filename of corresponding city map
-    filename = "../data/paris.jpg";
+    filename = "../data/nyc.jpg";
 
     // init traffic objects
     int nIntersections = 9;
@@ -119,8 +119,9 @@ int main()
     std::vector<std::shared_ptr<Vehicle>> vehicles;
     std::string backgroundImg;
     int nVehicles = 6;
-    createTrafficObjects_Paris(streets, intersections, vehicles, backgroundImg, nVehicles);
-
+    // createTrafficObjects_Paris(streets, intersections, vehicles, backgroundImg, nVehicles);
+    createTrafficObjects_NYC(streets, intersections, vehicles, backgroundImg, nVehicles);
+    
     /* PART 2 : simulate traffic objects */
 
     // simulate intersection
