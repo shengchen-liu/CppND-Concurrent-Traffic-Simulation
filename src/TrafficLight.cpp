@@ -16,10 +16,10 @@ T MessageQueue<T>::receive()
     // to wait for and receive new messages and pull them from the queue using move semantics. 
     // The received object should then be returned by the receive function. 
     std::unique_lock<std::mutex> lock(_mutex);
-    _condition.wait(lock, [this]{ return  !_queue.empty();});
+    _condition.wait(lock, [this]{ return  !_messageQueue.empty();});
 
-    T msg = std::move(_queue.front());
-    _queue.pop_front();
+    T msg = std::move(_messageQueue.back());
+    _messageQueue.pop_back();
     return msg;
 }
 
@@ -30,7 +30,7 @@ void MessageQueue<T>::send(T &&msg)
     // as well as _condition.notify_one() to add a new message to the queue and afterwards send a notification.
 
     std::lock_guard<std::mutex> lock(_mutex);
-    _queue.emplace_back(msg);
+    _messageQueue.emplace_back(msg);
     _condition.notify_one();
 }
 
@@ -47,7 +47,7 @@ void TrafficLight::waitForGreen()
     while (true)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        auto msg = _queue.receive();
+        auto msg = _messageQueue.receive();
         if(msg == green){
             return;
         }
@@ -74,17 +74,17 @@ void TrafficLight::cycleThroughPhases()
     // Also, the while-loop should use std::this_thread::sleep_for to wait 1ms between two cycles.
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(4000, 6000);
-    int cycleDuration = dist(gen);
+    std::uniform_int_distribution<int> distr(4, 6);
 
-    auto lastSwitchedTime = std::chrono::system_clock::now();
+    // Initialize cycleDuration
+    int cycleDuration = distr(gen);
+
+    auto lastUpdate = std::chrono::system_clock::now();
     while (true)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
-        auto tmpSeconds = std::chrono::duration_cast<std::chrono::milliseconds>
-                                (std::chrono::system_clock::now() - lastSwitchedTime);
-        int durationSinceSwitched = tmpSeconds.count();
+		long durationSinceSwitched = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - lastUpdate).count();
         
         if(durationSinceSwitched >= cycleDuration){
             // std::cout<< durationSinceSwitched << std::endl;
@@ -92,10 +92,10 @@ void TrafficLight::cycleThroughPhases()
             _currentPhase = (_currentPhase == red) ? green : red;
             // std::cout << _currentPhase << std::endl;
 
-            _queue.send(std::move(TrafficLightPhase(_currentPhase ) ));
+            _messageQueue.send(std::move(TrafficLightPhase(_currentPhase ) ));
 
-            lastSwitchedTime = std::chrono::system_clock::now();
-            cycleDuration = dist(gen);
+            lastUpdate = std::chrono::system_clock::now();
+            cycleDuration = distr(gen);
         }
         
     }
