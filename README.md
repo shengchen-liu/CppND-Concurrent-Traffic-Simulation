@@ -1,6 +1,10 @@
-# CPPND: a Concurrent Traffic Simulation
+# CppND: a Concurrent Traffic Simulation
 
-<img src="data/traffic_simulation.gif"/>
+To view the video on YouTube, click on the images below:
+
+[![IMAGE ALT TEXT HERE](./data/paris.gif)](https://youtu.be/jrqb8CBqcUs)
+
+[![IMAGE ALT TEXT HERE](./data/nyc.gif)](https://youtu.be/x1kRa3NVQiI)
 
 This is the project for the fourth course in the [Udacity C++ Nanodegree Program](https://www.udacity.com/course/c-plus-plus-nanodegree--nd213): Concurrency. 
 
