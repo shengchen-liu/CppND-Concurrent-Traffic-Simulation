@@ -74,7 +74,8 @@ void TrafficLight::cycleThroughPhases()
     // Also, the while-loop should use std::this_thread::sleep_for to wait 1ms between two cycles.
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> distr(4, 6);
+    // Please change the resolution of the waiting time to be in milliseconds. Currently you are waiting either for 4, 5, or 6 seconds. You a re missing 4.5 seconds, 5.5 seconds, 4.73 seconds, etc.
+    std::uniform_int_distribution<int> distr(4000, 6000);
 
     // Initialize cycleDuration
     int cycleDuration = distr(gen);
@@ -84,7 +85,7 @@ void TrafficLight::cycleThroughPhases()
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
-		long durationSinceSwitched = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now() - lastUpdate).count();
+		long durationSinceSwitched = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - lastUpdate).count();
         
         if(durationSinceSwitched >= cycleDuration){
             // std::cout<< durationSinceSwitched << std::endl;
